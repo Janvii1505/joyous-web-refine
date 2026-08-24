@@ -64,75 +64,146 @@ function Home() {
 
 /* ---------------- HERO ---------------- */
 
-function Hero() {
-  return (
-    <section className="relative overflow-hidden bg-background pb-24 pt-14 lg:pb-32 lg:pt-20">
-      <div className="pointer-events-none absolute left-1/2 top-10 h-[560px] w-[560px] -translate-x-1/2 blob bg-primary/25 blur-[90px]" />
-      <div className="pointer-events-none absolute -left-24 bottom-10 h-72 w-72 blob bg-secondary/15 blur-[80px]" />
-      <div className="pointer-events-none absolute -right-16 top-32 h-80 w-80 blob bg-leaf/12 blur-[80px]" />
+const HERO_WORDS = ["glow.", "energy.", "immunity.", "focus.", "joy."];
 
-      <div className="relative mx-auto max-w-[1400px] px-5 lg:px-10">
-        <div className="rise text-center">
-          <Eyebrow className="bg-card/70 backdrop-blur">
-            <Sparkles className="h-3.5 w-3.5 text-primary" /> 60 gummies · real fruit flavours
-          </Eyebrow>
+function Hero() {
+  const [wordIndex, setWordIndex] = useState(0);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const id = setInterval(() => setWordIndex((i) => (i + 1) % HERO_WORDS.length), 2200);
+    return () => clearInterval(id);
+  }, []);
+
+  const onMove = (e: React.MouseEvent<HTMLElement>) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    setTilt({
+      x: (e.clientX - r.left) / r.width - 0.5,
+      y: (e.clientY - r.top) / r.height - 0.5,
+    });
+  };
+
+  return (
+    <section
+      onMouseMove={onMove}
+      onMouseLeave={() => setTilt({ x: 0, y: 0 })}
+      className="relative overflow-hidden bg-background pb-20 pt-12 lg:pb-28 lg:pt-16"
+    >
+      <div className="hero-orb pointer-events-none absolute left-1/2 top-4 h-[620px] w-[620px] -translate-x-1/2 blob bg-primary/25 blur-[100px]" />
+      <div className="hero-orb pointer-events-none absolute -left-28 bottom-0 h-80 w-80 blob bg-secondary/20 blur-[90px] [animation-delay:-4s]" />
+      <div className="hero-orb pointer-events-none absolute -right-20 top-28 h-96 w-96 blob bg-leaf/15 blur-[90px] [animation-delay:-8s]" />
+      <div className="pointer-events-none absolute inset-0 hero-grid opacity-[0.35]" />
+
+      <div className="relative mx-auto grid max-w-[1400px] items-center gap-14 px-5 lg:grid-cols-[1.05fr_0.95fr] lg:px-10">
+        {/* Copy */}
+        <div className="relative z-10 text-center lg:text-left">
+          <div className="rise flex justify-center lg:justify-start">
+            <Eyebrow className="bg-card/70 backdrop-blur">
+              <Sparkles className="h-3.5 w-3.5 animate-pulse text-primary" /> 60 gummies · real fruit flavours
+            </Eyebrow>
+          </div>
+
+          <h1 className="display-xl mt-7 text-[13vw] leading-[0.86] sm:text-[9vw] lg:text-[6.4rem]">
+            {["Chew", "your", "way", "to"].map((w, i) => (
+              <span key={w} className="mr-[0.22em] inline-block" style={{ animation: `rise-in 0.9s ${i * 110}ms both` }}>
+                {w}
+              </span>
+            ))}
+            <span className="relative block h-[1.05em] overflow-hidden">
+              {HERO_WORDS.map((w, i) => (
+                <span
+                  key={w}
+                  aria-hidden={i !== wordIndex}
+                  className={cn(
+                    "text-gradient-gold absolute inset-x-0 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] lg:text-left",
+                    i === wordIndex
+                      ? "translate-y-0 opacity-100 blur-0"
+                      : "translate-y-full opacity-0 blur-[6px]",
+                  )}
+                >
+                  {w}
+                </span>
+              ))}
+            </span>
+          </h1>
+
+          <p
+            className="mx-auto mt-7 max-w-md text-base leading-relaxed text-muted-foreground sm:text-lg lg:mx-0"
+            style={{ animation: "rise-in 0.9s 520ms both" }}
+          >
+            Delicious daily gummies made with real fruit flavours and actives that actually earn their place in
+            your routine.
+          </p>
+
+          <div
+            className="mt-9 flex flex-wrap justify-center gap-3 lg:justify-start"
+            style={{ animation: "rise-in 0.9s 640ms both" }}
+          >
+            <Link to="/shop">
+              <BrandButton variant="solid" size="lg" className="group">
+                Shop Gummies
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </BrandButton>
+            </Link>
+            <a href="#flavours">
+              <BrandButton variant="outline" size="lg">
+                Explore Flavours
+              </BrandButton>
+            </a>
+          </div>
+
+          <div
+            className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 lg:justify-start"
+            style={{ animation: "rise-in 0.9s 760ms both" }}
+          >
+            <Rating value={4.8} count={4356} />
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-muted-foreground">
+              <Leaf className="h-4 w-4 text-leaf" /> 100% Vegetarian
+            </div>
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-muted-foreground">
+              <Truck className="h-4 w-4 text-secondary" /> Free over {inr(499)}
+            </div>
+          </div>
         </div>
 
-        <h1 className="rise display-xl relative z-10 mx-auto mt-8 max-w-5xl text-center text-[15vw] leading-[0.85] sm:text-[11vw] lg:text-[8.4rem]">
-          Goodness
-          <span className="block">
-            that tastes <span className="text-gradient-gold">this good.</span>
-          </span>
-        </h1>
+        {/* Visual */}
+        <div className="relative z-10" style={{ animation: "rise-in 1s 200ms both" }}>
+          <div
+            className="relative mx-auto w-[min(86vw,480px)] transition-transform duration-300 ease-out"
+            style={{ transform: `translate3d(${tilt.x * 22}px, ${tilt.y * 18}px, 0)` }}
+          >
+            <div className="spin-slow absolute inset-x-4 bottom-4 top-8 blob bg-[image:var(--gradient-gold)] opacity-90" />
+            <img
+              src={IMG.multi}
+              alt="Sonrup Biotin + Multivitamin gummies"
+              className="float-slow relative z-10 w-full drop-shadow-[0_40px_60px_rgba(40,26,10,0.35)]"
+            />
 
-        <div className="relative mt-[-2vw] grid items-end gap-10 lg:grid-cols-[1fr_auto_1fr]">
-          <div className="order-2 flex flex-col items-start gap-5 lg:order-1 lg:pb-16">
+            <div
+              className="absolute -left-4 top-16 z-20 rounded-2xl bg-card px-4 py-3 shadow-[var(--shadow-soft)] sm:-left-8"
+              style={{ transform: `translate3d(${tilt.x * -42}px, ${tilt.y * -34}px, 0)` }}
+            >
+              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Biotin</p>
+              <p className="font-display text-lg font-extrabold">5000 mcg</p>
+            </div>
+
+            <div
+              className="absolute -right-3 bottom-24 z-20 rounded-2xl bg-ink px-4 py-3 text-cream shadow-[var(--shadow-lift)] sm:-right-6"
+              style={{ transform: `translate3d(${tilt.x * -58}px, ${tilt.y * -46}px, 0)` }}
+            >
+              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">Per tube</p>
+              <p className="font-display text-lg font-extrabold">60 gummies</p>
+            </div>
+
             <img
               src={IMG.shilajit}
               alt="Sonrup Himalayan Shilajit gummies tube"
-              className="float-slow hidden h-64 w-52 rotate-[-8deg] rounded-[2rem] object-cover shadow-[var(--shadow-lift)] lg:block"
+              className="float-fast absolute -left-10 bottom-0 z-20 hidden h-40 w-32 rotate-[-9deg] rounded-[1.6rem] object-cover shadow-[var(--shadow-lift)] sm:block"
             />
-            <p className="max-w-xs text-sm leading-relaxed text-muted-foreground sm:text-base">
-              Delicious gummies made to make your everyday routine a little sweeter.
-            </p>
-          </div>
-
-          <div className="order-1 lg:order-2">
-            <div className="relative mx-auto w-[min(88vw,460px)]">
-              <div className="absolute inset-x-0 bottom-0 top-16 blob bg-[image:var(--gradient-gold)] opacity-90" />
-              <img
-                src={IMG.multi}
-                alt="Sonrup Biotin + Multivitamin gummies"
-                className="relative z-10 w-full drop-shadow-[0_40px_60px_rgba(40,26,10,0.35)]"
-              />
-              <div className="float-fast absolute -left-6 top-24 z-20 rounded-2xl bg-card px-4 py-3 shadow-[var(--shadow-soft)]">
-                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Rated</p>
-                <Rating value={4.8} count={4356} />
-              </div>
-              <div className="float-slow absolute -right-4 bottom-28 z-20 rounded-2xl bg-ink px-4 py-3 text-cream shadow-[var(--shadow-lift)]">
-                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">Biotin</p>
-                <p className="font-display text-lg font-extrabold">5000 mcg</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="order-3 flex flex-col items-start gap-6 lg:items-end lg:pb-16">
-            <div className="flex flex-wrap gap-3">
-              <Link to="/shop">
-                <BrandButton variant="solid" size="lg">
-                  Shop Gummies <ArrowRight className="h-4 w-4" />
-                </BrandButton>
-              </Link>
-              <a href="#flavours">
-                <BrandButton variant="outline" size="lg">
-                  Explore Flavours
-                </BrandButton>
-              </a>
-            </div>
             <img
               src={IMG.kids}
               alt="Sonrup Kid's Multivitamin gummies tube"
-              className="float-fast hidden h-64 w-52 rotate-[7deg] rounded-[2rem] object-cover shadow-[var(--shadow-lift)] lg:block"
+              className="float-slow absolute -right-10 top-4 z-20 hidden h-40 w-32 rotate-[8deg] rounded-[1.6rem] object-cover shadow-[var(--shadow-lift)] sm:block [animation-delay:-2s]"
             />
           </div>
         </div>
