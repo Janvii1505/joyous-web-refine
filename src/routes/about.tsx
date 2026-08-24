@@ -97,13 +97,12 @@ function About() {
       <Container className="py-16 sm:py-24">
         <SectionTitle eyebrow="The journey" title="How we got here" />
         <div className="mt-12 border-l border-border pl-6 sm:pl-10">
-          {milestones.map((m: { year: string; title: string; body: string }, i: number) => (
-            <Reveal key={m.year + m.title} delay={i * 70}>
+          {milestones.map((m: { year: string; text: string }, i: number) => (
+            <Reveal key={m.year} delay={i * 70}>
               <div className="relative pb-12">
                 <span className="absolute -left-[31px] top-1 grid h-4 w-4 place-items-center rounded-full bg-[image:var(--gradient-gold)] sm:-left-[47px]" />
                 <p className="text-xs font-bold uppercase tracking-[0.22em] text-secondary">{m.year}</p>
-                <p className="mt-2 font-display text-2xl font-extrabold">{m.title}</p>
-                <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">{m.body}</p>
+                <p className="mt-2 max-w-2xl font-display text-xl font-extrabold leading-snug">{m.text}</p>
               </div>
             </Reveal>
           ))}
