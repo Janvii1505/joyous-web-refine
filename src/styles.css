@@ -240,3 +240,30 @@
     display: none;
   }
 }
+
+@keyframes orb-drift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33% { transform: translate3d(3%, -4%, 0) scale(1.08); }
+  66% { transform: translate3d(-3%, 3%, 0) scale(0.95); }
+}
+
+@utility hero-orb {
+  animation: orb-drift 16s ease-in-out infinite;
+}
+
+@keyframes spin-slow-kf {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@utility spin-slow {
+  animation: spin-slow-kf 26s linear infinite;
+}
+
+@utility hero-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--border) 55%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--border) 55%, transparent) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse at center, black, transparent 72%);
+}
