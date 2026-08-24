@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as BestSellersRouteImport } from './routes/best-sellers'
+import { Route as FaqRouteImport } from './routes/faq'
 import { Route as NewArrivalsRouteImport } from './routes/new-arrivals'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as ShopRouteImport } from './routes/shop'
@@ -30,6 +31,11 @@ const AboutRoute = AboutRouteImport.update({
 const BestSellersRoute = BestSellersRouteImport.update({
   id: '/best-sellers',
   path: '/best-sellers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NewArrivalsRoute = NewArrivalsRouteImport.update({
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/best-sellers': typeof BestSellersRoute
+  '/faq': typeof FaqRoute
   '/new-arrivals': typeof NewArrivalsRoute
   '/search': typeof SearchRoute
   '/shop': typeof ShopRoute
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/best-sellers': typeof BestSellersRoute
+  '/faq': typeof FaqRoute
   '/new-arrivals': typeof NewArrivalsRoute
   '/search': typeof SearchRoute
   '/shop': typeof ShopRoute
@@ -76,6 +84,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/best-sellers': typeof BestSellersRoute
+  '/faq': typeof FaqRoute
   '/new-arrivals': typeof NewArrivalsRoute
   '/search': typeof SearchRoute
   '/shop': typeof ShopRoute
@@ -87,6 +96,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/best-sellers'
+    | '/faq'
     | '/new-arrivals'
     | '/search'
     | '/shop'
@@ -96,6 +106,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/best-sellers'
+    | '/faq'
     | '/new-arrivals'
     | '/search'
     | '/shop'
@@ -105,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/best-sellers'
+    | '/faq'
     | '/new-arrivals'
     | '/search'
     | '/shop'
@@ -115,6 +127,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   BestSellersRoute: typeof BestSellersRoute
+  FaqRoute: typeof FaqRoute
   NewArrivalsRoute: typeof NewArrivalsRoute
   SearchRoute: typeof SearchRoute
   ShopRoute: typeof ShopRoute
@@ -142,6 +155,13 @@ declare module '@tanstack/react-router' {
       path: '/best-sellers'
       fullPath: '/best-sellers'
       preLoaderRoute: typeof BestSellersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/new-arrivals': {
@@ -179,6 +199,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   BestSellersRoute: BestSellersRoute,
+  FaqRoute: FaqRoute,
   NewArrivalsRoute: NewArrivalsRoute,
   SearchRoute: SearchRoute,
   ShopRoute: ShopRoute,
